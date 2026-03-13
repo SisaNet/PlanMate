@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/office/unpack.py \"C:/Users/HP/Downloads/PlanCheck_SA_Specification_v1.docx\" /tmp/spec_unpacked/)",
+      "Bash(python3 scripts/office/unpack.py \"C:/Users/HP/Downloads/PlanCheck_SA_Specification_v1.docx\" /tmp/spec_unpacked/)"
+    ]
+  }
+}
