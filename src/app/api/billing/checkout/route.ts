@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         amount: 49900, // R499.00 in kobo
         currency: 'ZAR',
         plan: process.env.PAYSTACK_PROFESSIONAL_PLAN_CODE,
-        callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/practice/billing?success=true`,
+        callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/practice/billing?success=true`,
         metadata: {
           user_id: user.id,
           plan: 'professional',

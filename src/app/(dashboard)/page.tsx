@@ -175,13 +175,13 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div className="mb-8 flex gap-3">
-        <Link href="/dashboard/projects/new">
+        <Link href="/projects/new">
           <Button className="rounded-full gap-2">
             <Plus className="h-4 w-4" />
             New Project
           </Button>
         </Link>
-        <Link href="/dashboard/projects">
+        <Link href="/projects">
           <Button variant="outline" className="rounded-full gap-2">
             <FolderOpen className="h-4 w-4" />
             View All Projects
@@ -195,7 +195,7 @@ export default function DashboardPage() {
           <h2 className="text-lg font-semibold">Recent Projects</h2>
           {projects.length > 0 && (
             <Link
-              href="/dashboard/projects"
+              href="/projects"
               className="flex items-center gap-1 text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
             >
               View all
@@ -228,7 +228,7 @@ export default function DashboardPage() {
               <p className="mb-5 max-w-sm text-center text-sm text-neutral-500">
                 Create your first project to start checking building plan compliance.
               </p>
-              <Link href="/dashboard/projects/new">
+              <Link href="/projects/new">
                 <Button className="rounded-full gap-2">
                   <Plus className="h-4 w-4" />
                   Create your first project
@@ -241,7 +241,7 @@ export default function DashboardPage() {
             {projects.map((project) => {
               const status = statusConfig[project.status] || statusConfig.draft
               return (
-                <Link key={project.id} href={`/dashboard/projects/${project.id}`}>
+                <Link key={project.id} href={`/projects/${project.id}`}>
                   <Card className="group bg-white rounded-xl shadow-sm border transition-all hover:-translate-y-0.5 hover:shadow-md">
                     <CardContent className="flex items-center justify-between p-5">
                       <div className="min-w-0 flex-1">

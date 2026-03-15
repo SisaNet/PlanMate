@@ -81,7 +81,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         </Button>
 
         {/* Notifications */}
-        <Link href="/dashboard/notifications">
+        <Link href="/notifications">
           <Button variant="ghost" size="icon" className="relative h-9 w-9">
             <Bell className="h-4 w-4" />
           </Button>
@@ -102,10 +102,10 @@ export function Header({ onMenuClick }: HeaderProps) {
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="/dashboard/settings" className="w-full">Settings</Link>
+              <Link href="/settings" className="w-full">Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/dashboard/practice/billing" className="w-full">Billing</Link>
+              <Link href="/practice/billing" className="w-full">Billing</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut} className="text-red-600">

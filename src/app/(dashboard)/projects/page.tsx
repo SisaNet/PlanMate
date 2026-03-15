@@ -76,7 +76,7 @@ export default function ProjectsPage() {
             Manage your building plan compliance checks
           </p>
         </div>
-        <Link href="/dashboard/projects/new">
+        <Link href="/projects/new">
           <Button className="rounded-full gap-2">
             <Plus className="h-4 w-4" />
             New Project
@@ -106,7 +106,7 @@ export default function ProjectsPage() {
             Create your first project to start checking building plan compliance
             against municipality requirements.
           </p>
-          <Link href="/dashboard/projects/new">
+          <Link href="/projects/new">
             <Button className="rounded-full gap-2">
               <Plus className="h-4 w-4" />
               Create your first project
@@ -121,7 +121,7 @@ export default function ProjectsPage() {
             return (
               <Link
                 key={project.id}
-                href={`/dashboard/projects/${project.id}`}
+                href={`/projects/${project.id}`}
               >
                 <Card className="group rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-neutral-900/50">
                   <CardContent className="p-6">

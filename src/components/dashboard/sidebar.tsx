@@ -27,22 +27,22 @@ const navigation = [
   {
     label: 'Main',
     items: [
-      { name: 'Projects', href: '/dashboard/projects', icon: FolderOpen },
-      { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+      { name: 'Projects', href: '/projects', icon: FolderOpen },
+      { name: 'Notifications', href: '/notifications', icon: Bell },
     ],
   },
   {
     label: 'Tools',
     items: [
-      { name: 'SACAP Check', href: '/dashboard/sacap-check', icon: BadgeCheck },
+      { name: 'SACAP Check', href: '/sacap-check', icon: BadgeCheck },
     ],
   },
   {
     label: 'Practice',
     items: [
-      { name: 'Team', href: '/dashboard/practice/members', icon: Users },
-      { name: 'Billing', href: '/dashboard/practice/billing', icon: CreditCard },
-      { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+      { name: 'Team', href: '/practice/members', icon: Users },
+      { name: 'Billing', href: '/practice/billing', icon: CreditCard },
+      { name: 'Settings', href: '/settings', icon: Settings },
     ],
   },
 ]
@@ -73,7 +73,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     >
       {/* Logo */}
       <div className="flex h-16 items-center justify-between border-b border-neutral-100 px-4 dark:border-neutral-800">
-        <Link href="/dashboard/projects" className="flex items-center gap-2">
+        <Link href="/projects" className="flex items-center gap-2">
           <Building2 className="h-7 w-7 shrink-0 text-blue-600" />
           {!collapsed && (
             <span className="text-lg font-semibold tracking-tight">

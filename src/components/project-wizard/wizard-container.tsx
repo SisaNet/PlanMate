@@ -164,7 +164,7 @@ export function WizardContainer({ existingProject }: WizardContainerProps) {
 
         if (error) throw error
         toast.success('Draft saved')
-        router.push(`/dashboard/projects/new?id=${project.id}`)
+        router.push(`/projects/new?id=${project.id}`)
       }
     } catch (error) {
       toast.error('Failed to save draft')
@@ -224,7 +224,7 @@ export function WizardContainer({ existingProject }: WizardContainerProps) {
       }
 
       toast.success('Project created! Generating compliance checklist...')
-      router.push(`/dashboard/projects/${projectId}`)
+      router.push(`/projects/${projectId}`)
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Failed to create project'
       toast.error(message)

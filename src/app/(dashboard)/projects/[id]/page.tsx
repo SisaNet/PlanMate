@@ -69,7 +69,7 @@ export default function ProjectDetailPage() {
         .single()
 
       if (error || !data) {
-        router.push('/dashboard/projects')
+        router.push('/projects')
         return
       }
 
@@ -133,7 +133,7 @@ export default function ProjectDetailPage() {
       {/* Header */}
       <div className="mb-8">
         <Link
-          href="/dashboard/projects"
+          href="/projects"
           className="mb-4 inline-flex items-center gap-1 text-sm text-neutral-500 transition hover:text-neutral-700 dark:hover:text-neutral-300"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -268,7 +268,7 @@ export default function ProjectDetailPage() {
       {/* Feature tabs grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {projectTabs.map((tab) => (
-          <Link key={tab.href} href={`/dashboard/projects/${project.id}/${tab.href}`}>
+          <Link key={tab.href} href={`/projects/${project.id}/${tab.href}`}>
             <Card className="group h-full rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-neutral-900/50">
               <CardContent className="p-5">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100 transition-colors group-hover:bg-blue-50 dark:bg-neutral-800 dark:group-hover:bg-blue-950">

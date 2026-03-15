@@ -17,7 +17,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/dashboard/projects'
+  const redirect = searchParams.get('redirect') || '/projects'
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
