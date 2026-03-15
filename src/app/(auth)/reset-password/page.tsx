@@ -1,7 +1,6 @@
 'use client'
 
 import { Suspense, useState } from 'react'
-import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -10,24 +9,30 @@ import { Label } from '@/components/ui/label'
 import { Building2, Loader2, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 
-function LoginForm() {
-  const [email, setEmail] = useState('')
+function ResetPasswordForm() {
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/'
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleReset(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
 
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match')
+      return
+    }
+
+    if (password.length < 8) {
+      toast.error('Password must be at least 8 characters')
+      return
+    }
+
+    setLoading(true)
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+
+    const { error } = await supabase.auth.updateUser({ password })
 
     if (error) {
       toast.error(error.message)
@@ -35,9 +40,8 @@ function LoginForm() {
       return
     }
 
-    toast.success('Welcome back!')
-    router.push(redirect)
-    router.refresh()
+    toast.success('Password updated successfully!')
+    router.push('/projects')
   }
 
   return (
@@ -48,46 +52,24 @@ function LoginForm() {
       </div>
 
       <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Set New Password</h1>
         <p className="mt-2 text-sm text-neutral-500">
-          Sign in to your account to continue
+          Enter your new password below
         </p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-4">
+      <form onSubmit={handleReset} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@practice.co.za"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-            className="h-11"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              href="/forgot-password"
-              className="text-xs text-blue-600 hover:text-blue-700"
-            >
-              Forgot password?
-            </Link>
-          </div>
+          <Label htmlFor="password">New Password</Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="Enter your password"
+              placeholder="Enter new password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete="current-password"
+              minLength={8}
               className="h-11 pr-10"
             />
             <button
@@ -95,41 +77,43 @@ function LoginForm() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
             >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="confirm">Confirm Password</Label>
+          <Input
+            id="confirm"
+            type="password"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="h-11"
+          />
         </div>
 
         <Button type="submit" className="h-11 w-full rounded-full" disabled={loading}>
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Signing in...
+              Updating...
             </>
           ) : (
-            'Sign in'
+            'Update Password'
           )}
         </Button>
       </form>
-
-      <p className="mt-6 text-center text-sm text-neutral-500">
-        Don&apos;t have an account?{' '}
-        <Link href="/register" className="font-medium text-blue-600 hover:text-blue-700">
-          Create one
-        </Link>
-      </p>
     </div>
   )
 }
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   return (
     <Suspense fallback={<div className="h-96 animate-pulse" />}>
-      <LoginForm />
+      <ResetPasswordForm />
     </Suspense>
   )
 }

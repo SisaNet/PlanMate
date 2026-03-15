@@ -17,10 +17,12 @@ import {
   HelpCircle,
   LogOut,
   ChevronLeft,
+  Shield,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 const navigation = [
@@ -55,6 +57,23 @@ interface SidebarProps {
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+
+  useEffect(() => {
+    async function checkAdmin() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_super_admin')
+          .eq('id', user.id)
+          .single()
+        setIsSuperAdmin(profile?.is_super_admin || false)
+      }
+    }
+    checkAdmin()
+  }, [])
 
   async function handleSignOut() {
     const supabase = createClient()
@@ -132,7 +151,20 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       </nav>
 
       {/* Bottom */}
-      <div className="border-t border-neutral-100 p-3 dark:border-neutral-800">
+      <div className="border-t border-neutral-100 p-3 dark:border-neutral-800 space-y-1">
+        {isSuperAdmin && (
+          <Link
+            href="/admin"
+            className={cn(
+              'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-950',
+              collapsed && 'justify-center px-2'
+            )}
+            title={collapsed ? 'Admin Panel' : undefined}
+          >
+            <Shield className="h-4.5 w-4.5 shrink-0" />
+            {!collapsed && 'Admin Panel'}
+          </Link>
+        )}
         <button
           onClick={handleSignOut}
           className={cn(

@@ -129,15 +129,34 @@ export function WizardContainer({ existingProject }: WizardContainerProps) {
     }
   }, [currentStep])
 
+  const ensureProfile = useCallback(async (supabase: ReturnType<typeof createClient>, userId: string, email: string) => {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .single()
+
+    if (!profile) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({ id: userId, full_name: '', email: email || '' })
+      if (profileError && !profileError.message.includes('duplicate')) {
+        throw new Error('Failed to create user profile: ' + profileError.message)
+      }
+    }
+  }, [])
+
   const handleSaveDraft = useCallback(async () => {
     setSaving(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('Not authenticated')
+      if (!user) throw new Error('Not authenticated — please sign in again')
+
+      await ensureProfile(supabase, user.id, user.email || '')
 
       if (existingProject) {
-        await supabase
+        const { error } = await supabase
           .from('projects')
           .update({
             wizard_step: currentStep,
@@ -147,6 +166,7 @@ export function WizardContainer({ existingProject }: WizardContainerProps) {
             status: 'draft',
           })
           .eq('id', existingProject.id)
+        if (error) throw error
         toast.success('Draft saved')
       } else {
         const { data: project, error } = await supabase
@@ -166,19 +186,23 @@ export function WizardContainer({ existingProject }: WizardContainerProps) {
         toast.success('Draft saved')
         router.push(`/projects/new?id=${project.id}`)
       }
-    } catch (error) {
-      toast.error('Failed to save draft')
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to save draft'
+      toast.error(message)
+      console.error('Save draft error:', error)
     } finally {
       setSaving(false)
     }
-  }, [currentStep, data, existingProject, router])
+  }, [currentStep, data, existingProject, router, ensureProfile])
 
   const handleCreate = useCallback(async () => {
     setSaving(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('Not authenticated')
+      if (!user) throw new Error('Not authenticated — please sign in again')
+
+      await ensureProfile(supabase, user.id, user.email || '')
 
       const projectPayload = {
         user_id: user.id,
@@ -228,10 +252,11 @@ export function WizardContainer({ existingProject }: WizardContainerProps) {
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Failed to create project'
       toast.error(message)
+      console.error('Create project error:', error)
     } finally {
       setSaving(false)
     }
-  }, [data, existingProject, router])
+  }, [data, existingProject, router, ensureProfile])
 
   return (
     <div className="mx-auto max-w-3xl">

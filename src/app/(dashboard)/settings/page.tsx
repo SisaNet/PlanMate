@@ -227,11 +227,14 @@ export default function SettingsPage() {
                 className="rounded-full"
                 onClick={async () => {
                   const supabase = createClient()
-                  const { error } = await supabase.auth.resetPasswordForEmail(profile?.email || '')
+                  const { error } = await supabase.auth.resetPasswordForEmail(
+                    profile?.email || '',
+                    { redirectTo: `${window.location.origin}/reset-password` }
+                  )
                   if (error) {
-                    toast.error('Failed to send reset email')
+                    toast.error(error.message || 'Failed to send reset email')
                   } else {
-                    toast.success('Password reset email sent')
+                    toast.success('Password reset email sent — check your inbox')
                   }
                 }}
               >

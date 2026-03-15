@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // Protected routes (everything except auth pages, landing, and API/static)
-  const isAuthPage = request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register'
+  const isAuthPage = request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register' || request.nextUrl.pathname === '/reset-password'
   const isPublicPage = request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/auth/')
   const isApiRoute = request.nextUrl.pathname.startsWith('/api/')
 
@@ -47,9 +47,9 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect logged-in users away from auth pages
-  if (user && isAuthPage) {
+  if (user && isAuthPage && request.nextUrl.pathname !== '/reset-password') {
     const url = request.nextUrl.clone()
-    url.pathname = '/projects'
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
 
