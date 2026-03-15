@@ -160,7 +160,7 @@ CREATE POLICY "documents_project_read" ON documents
   );
 
 CREATE POLICY "documents_own_insert" ON documents
-  FOR INSERT WITH CHECK (uploaded_by = auth.uid());
+  FOR INSERT WITH CHECK (user_id = auth.uid());
 
 -- ============================================
 -- NOTIFICATIONS
@@ -194,10 +194,10 @@ CREATE POLICY "ai_msg_convo_insert" ON ai_messages
 -- DATA CORRECTIONS
 -- ============================================
 CREATE POLICY "corrections_own_read" ON data_corrections
-  FOR SELECT USING (submitted_by = auth.uid());
+  FOR SELECT USING (user_id = auth.uid());
 
 CREATE POLICY "corrections_own_insert" ON data_corrections
-  FOR INSERT WITH CHECK (submitted_by = auth.uid());
+  FOR INSERT WITH CHECK (user_id = auth.uid());
 
 -- ============================================
 -- INSPECTION STAGES
